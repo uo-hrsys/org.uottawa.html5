@@ -1,0 +1,28 @@
+<project name="dita2uohtml5" default="dita2uohtml5">
+
+	<property name="transtype" value="uohtml5"/>
+
+	<target name="dita2uohtml5" xmlns:dita="http://dita-ot.sourceforge.net"
+		dita:extension="depends org.dita.dost.platform.InsertDependsAction">
+
+
+		<antcall target="dita2html5">
+			<param name="html5.id.main.container" value="main-container"/>
+			<param name="html5.id.section.container" value="section-container"/>
+			<param name="html5.id.main.content" value="main-content"/>
+			<param name="html5.id.navigation" value="home"/>
+			<param name="html5.js.options" value=""/>
+			<param name="html5.site.theme" value="uo"/>
+			<param name="html5.class.main.content" value="span-24 last"/>
+			<param name="html5.navigation.markup" value="navigation-ico"/>
+			<param name="html5.grid.prefix" value="span-"/>
+			<param name="html5.args.theme.file" value="/a/themes/uo/css/style.css"/>
+			<param name="args.js.file" value="/a/themes/uo/js/script-min.js"/>
+			<param name="http.absolute.uri" value="/a/themes/"/>
+			<!--param name="html5.prevent.copy.libs" value="yes" /-->
+
+		</antcall>
+
+	</target>
+
+</project>

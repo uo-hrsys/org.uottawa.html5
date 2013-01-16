@@ -2,7 +2,7 @@ org.uottawa.html5
 =============
 
 Contains plugins used at the University of Ottawa to render DITA files into HTML5 Web templates.
-The plugin will only work on University of Ottawa servers.
+The plugin will only worka on University of Ottawa servers.
 
 
 Installation

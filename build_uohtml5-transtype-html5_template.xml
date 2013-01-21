@@ -2,9 +2,15 @@
 
 	<property name="transtype" value="uohtml5"/>
 
-	<condition property="html5.output.localbreadcrumb" value="TRUE">
+	<condition property="html5.output.localbreadcrumb" value="FALSE">
 		  <not>
         <isset property="html5.output.localbreadcrumb" />
+      </not>
+	</condition>
+	
+	<condition property="html5.navigation.markup" value="">
+		  <not>
+        <isset property="html5.navigation.markup" />
       </not>
 	</condition>
 
@@ -19,11 +25,14 @@
 			<param name="html5.js.options" value=""/>
 			<param name="html5.site.theme" value="uo"/>
 			<param name="html5.class.main.content" value="span-24 last"/>
-			<param name="html5.navigation.markup" value="navigation-ico"/>
 			<param name="html5.grid.prefix" value="span-"/>
+			
+			<!-- theses lines allows to add the assets in a central directory, 
+			     so all documentation point to the same assets file -->
 			<param name="html5.args.theme.file" value="/a/themes/uo/css/style.css"/>
 			<param name="args.js.file" value="/a/themes/uo/js/script-min.js"/>
 			<param name="http.absolute.uri" value="/a/themes/"/>
+			<param name="html5.navigation.markup" value="${html5.navigation.markup}"/>
 			<!--param name="html5.prevent.copy.libs" value="yes" /-->
 
 		</antcall>

@@ -2,8 +2,13 @@
 
 	<property name="transtype" value="uohtml5"></property>
 
-	<target name="dita2uohtml5">
+	<condition property="html5.output.localbreadcrumb" value="TRUE">
+		  <not>
+        <isset property="html5.output.localbreadcrumb"></isset>
+      </not>
+	</condition>
 
+	<target name="dita2uohtml5">
 
 		<antcall target="dita2html5">
 			<param name="html5.id.main.container" value="main-container"></param>

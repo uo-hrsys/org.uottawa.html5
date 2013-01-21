@@ -2,9 +2,14 @@
 
 	<property name="transtype" value="uohtml5"/>
 
+	<condition property="html5.output.localbreadcrumb" value="TRUE">
+		  <not>
+        <isset property="html5.output.localbreadcrumb" />
+      </not>
+	</condition>
+
 	<target name="dita2uohtml5" xmlns:dita="http://dita-ot.sourceforge.net"
 		dita:extension="depends org.dita.dost.platform.InsertDependsAction">
-
 
 		<antcall target="dita2html5">
 			<param name="html5.id.main.container" value="main-container"/>

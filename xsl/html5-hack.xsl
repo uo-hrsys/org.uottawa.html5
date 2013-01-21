@@ -18,15 +18,17 @@
     limitations under the License.
   
  -->
- <xsl:stylesheet version="2.0" xmlns:lang="http://www.w3.org/lang" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet version="2.0" xmlns:lang="http://www.w3.org/lang" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:df="http://dita2indesign.org/dita/functions" xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:mapdriven="http://dita4publishers.org/mapdriven" xmlns:enum="http://dita4publishers.org/enumerables"
   exclude-result-prefixes="df xs xsl lang mapdriven enum">
 
+  <xsl:param name="HTML5OUTPUTLOCALBREADCRUMB" select="'TRUE'"/>
+
   <xsl:variable name="currentTopNavSection" select="/map/topicmeta/data[@name='currentTopNavSection']/@value"/>
   <xsl:variable name="outputDirectory" select="/map/topicmeta/data[@name='alternate-lang-directory']/@value"/>
   <xsl:variable name="lang" select="substring($TEMPLATELANG, 1, 2)"/>
-  
+
   <!-- our templates used 2 digits lang -->
   <xsl:template match="*" mode="generate-html5-page">
     <html>
@@ -36,14 +38,14 @@
       <xsl:apply-templates select="." mode="generate-body"/>
     </html>
   </xsl:template>
-  
+
   <!-- The following lines are a workarround to ouput central server side include to the university -->
   <xsl:template match="*" mode="gen-user-bottom-head">
 
     <xsl:comment>#include virtual="/assets-templates/3/inc/head-top-nojquery.html"</xsl:comment>
     <xsl:comment>#include virtual="/a/inc/main/head.php"</xsl:comment>
     <xsl:comment>#include virtual="/assets-templates/3/inc/head-bottom.html"</xsl:comment>
-    
+
     <script>
 		<xsl:attribute name="type">text/javascript</xsl:attribute>
 		<xsl:text>var currentTopNavSection = "</xsl:text><xsl:value-of select="$currentTopNavSection"/><xsl:text>";</xsl:text>
@@ -97,22 +99,67 @@
         <xsl:apply-templates select="." mode="include-site-top-navigation"/>
         <xsl:apply-templates select="." mode="generate-main-content"/>
       </div>
-      <xsl:apply-templates select="." mode="generate-footer"/>    
+      <xsl:apply-templates select="." mode="generate-footer"/>
     </div>
   </xsl:template>
+
+
+  <!-- generate main container -->
+  <xsl:template match="*" mode="generate-local-breadcrumbs">
+    <xsl:param name="collected-data" as="element()" tunnel="yes"/>
+    <xsl:param name="relativePath" as="xs:string" select="''" tunnel="yes"/>
+    <xsl:param name="documentation-title" as="xs:string" tunnel="yes"/>
+
+    <xsl:variable name="id" select="./@id"/>
+    <xsl:variable name="topicAncestors" select="$collected-data//*[@topicID=$id]/ancestor::*"/>
+
+    <xsl:if test="$HTML5OUTPUTLOCALBREADCRUMB = 'TRUE'">
+      <div id="toolbar">
+
+        <ul id="breadcrumbs">
+
+          <li class="home">
+            <a class="home" href="{concat($relativePath, 'index.html')}">
+              <xsl:value-of select="$documentation-title"/>
+            </a>
+          </li>
+
+          <xsl:for-each select="$topicAncestors">
+            <xsl:if test="name(./*[1]) = 'title' and name(.) = 'topichead'">
+              <li>
+                <xsl:variable name="name">
+                  <xsl:choose>
+                    <xsl:when test="./@origId">
+                      <xsl:value-of select="'a'"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="'span'"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <xsl:element name="{$name}">
+                  <xsl:if test="./@origId">
+                    <xsl:attribute name="href" select="concat($relativePath, 'index.html', '#', ./@origId)"/>
+                  </xsl:if>
+                  <xsl:value-of select="normalize-space(./*[1])"/>
+                </xsl:element>
+              </li>
+            </xsl:if>
+          </xsl:for-each>
+
+        </ul>
+      </div>
+    </xsl:if>
+  </xsl:template>
+
 
   <!-- generate main content -->
   <xsl:template match="*" mode="generate-main-content">
     <xsl:param name="is-root" as="xs:boolean" tunnel="yes" select="false"/>
     <xsl:param name="content" tunnel="yes" as="node()*"/>
     <xsl:param name="navigation" as="element()*" tunnel="yes"/>
-    <xsl:param name="collected-data" as="element()" tunnel="yes"/>
-    <xsl:param name="relativePath" as="xs:string" select="''" tunnel="yes" />
-    <xsl:param name="documentation-title" as="xs:string" tunnel="yes" />
-    
-    <xsl:variable name="id" select="./@id" />
-    <xsl:variable name="topicAncestors" select="$collected-data//*[@topicID=$id]/ancestor::*"/>
-	
+
+
     <div id="{$IDMAINCONTENT}" class="{$CLASSMAINCONTENT}">
 
       <xsl:sequence select="'&#x0a;'"/>
@@ -121,10 +168,7 @@
         <xsl:when test="$is-root">
           <xsl:sequence select="$navigation"/>
         </xsl:when>
-        <xsl:otherwise>
-        	
-        	
-         </xsl:otherwise>
+        <xsl:otherwise> </xsl:otherwise>
 
       </xsl:choose>
 
@@ -135,43 +179,13 @@
             <xsl:apply-templates select="." mode="set-initial-content"/>
           </xsl:when>
           <xsl:otherwise>
-            <!-- !important
+            <!-- 
+            	    !important
         		     if you remove section, you will need to change
         		     the d4p.property externalContentElement
         		-->
             <article>
-            <div id="toolbar">
-        	
-				<ul id="breadcrumbs">
-					<li class="home">
-						<a class="home" href="{concat($relativePath, 'index.html')}"><xsl:value-of select="$documentation-title"/></a>
-					</li>
-					
-					<xsl:for-each select="$topicAncestors">
-						<xsl:if test="name(./*[1]) = 'title' and name(.) = 'topichead'">
-							<li>
-							  <xsl:variable name="name">
-							  	<xsl:choose>
-							  		<xsl:when test="./@origId">
-							  			<xsl:value-of select="'a'" />
-							  		</xsl:when>
-							  		<xsl:otherwise>
-							  			<xsl:value-of select="'span'" />						  		
-							  		</xsl:otherwise>
-							  	</xsl:choose>
-							  </xsl:variable>
-							  <xsl:element name="{$name}">
-							  	<xsl:if test="./@origId">
-							  		<xsl:attribute name="href" select="concat($relativePath, 'index.html', '#', ./@origId)" />
-							  	</xsl:if>
-									<xsl:value-of select="normalize-space(./*[1])" />
-							  </xsl:element>
-							</li>
-						</xsl:if>
-					</xsl:for-each>
-					
-				</ul>
-			</div>
+              <xsl:apply-templates select="." mode="generate-local-breadcrumbs"/>
               <xsl:sequence select="$content"/>
             </article>
           </xsl:otherwise>
@@ -290,7 +304,7 @@
   </xsl:template>
 
 
-  <xsl:template mode="html5-impl" match="*"></xsl:template>
+  <xsl:template mode="html5-impl" match="*"/>
 
 
 </xsl:stylesheet>

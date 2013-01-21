@@ -106,7 +106,13 @@
     <xsl:param name="is-root" as="xs:boolean" tunnel="yes" select="false"/>
     <xsl:param name="content" tunnel="yes" as="node()*"/>
     <xsl:param name="navigation" as="element()*" tunnel="yes"/>
-
+    <xsl:param name="collected-data" as="element()" tunnel="yes"/>
+    <xsl:param name="relativePath" as="xs:string" select="''" tunnel="yes" />
+    <xsl:param name="documentation-title" as="xs:string" tunnel="yes" />
+    
+    <xsl:variable name="id" select="./@id" />
+    <xsl:variable name="topicAncestors" select="$collected-data//*[@topicID=$id]/ancestor::*"/>
+	
     <div id="{$IDMAINCONTENT}" class="{$CLASSMAINCONTENT}">
 
       <xsl:sequence select="'&#x0a;'"/>
@@ -115,7 +121,10 @@
         <xsl:when test="$is-root">
           <xsl:sequence select="$navigation"/>
         </xsl:when>
-        <xsl:otherwise> </xsl:otherwise>
+        <xsl:otherwise>
+        	
+        	
+         </xsl:otherwise>
 
       </xsl:choose>
 
@@ -131,6 +140,38 @@
         		     the d4p.property externalContentElement
         		-->
             <article>
+            <div id="toolbar">
+        	
+				<ul id="breadcrumbs">
+					<li class="home">
+						<a class="home" href="{concat($relativePath, 'index.html')}"><xsl:value-of select="$documentation-title"/></a>
+					</li>
+					
+					<xsl:for-each select="$topicAncestors">
+						<xsl:if test="name(./*[1]) = 'title' and name(.) = 'topichead'">
+							<li>
+							  <xsl:variable name="name">
+							  	<xsl:choose>
+							  		<xsl:when test="./@origId">
+							  			<xsl:value-of select="'a'" />
+							  		</xsl:when>
+							  		<xsl:otherwise>
+							  			<xsl:value-of select="'span'" />						  		
+							  		</xsl:otherwise>
+							  	</xsl:choose>
+							  </xsl:variable>
+							  <xsl:element name="{$name}">
+							  	<xsl:if test="./@origId">
+							  		<xsl:attribute name="href" select="concat($relativePath, 'index.html', '#', ./@origId)" />
+							  	</xsl:if>
+									<xsl:value-of select="normalize-space(./*[1])" />
+							  </xsl:element>
+							</li>
+						</xsl:if>
+					</xsl:for-each>
+					
+				</ul>
+			</div>
               <xsl:sequence select="$content"/>
             </article>
           </xsl:otherwise>

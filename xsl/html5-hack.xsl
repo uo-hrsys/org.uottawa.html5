@@ -139,7 +139,7 @@
                 </xsl:variable>
                 <xsl:element name="{$name}">
                   <xsl:if test="./@origId">
-                    <xsl:attribute name="href" select="concat($relativePath, 'index.html', '#', ./@origId)"/>
+                    <xsl:attribute name="href" select="concat($relativePath, '#', ./@origId)"/>
                   </xsl:if>
                   <xsl:value-of select="normalize-space(./*[1])"/>
                 </xsl:element>
@@ -168,7 +168,9 @@
         <xsl:when test="$is-root">
           <xsl:sequence select="$navigation"/>
         </xsl:when>
-        <xsl:otherwise> </xsl:otherwise>
+        <xsl:otherwise>
+        	<xsl:apply-templates select="." mode="generate-local-breadcrumbs"/>        
+        </xsl:otherwise>
 
       </xsl:choose>
 
@@ -185,7 +187,6 @@
         		     the d4p.property externalContentElement
         		-->
             <article>
-              <xsl:apply-templates select="." mode="generate-local-breadcrumbs"/>
               <xsl:sequence select="$content"/>
             </article>
           </xsl:otherwise>

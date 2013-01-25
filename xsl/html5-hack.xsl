@@ -158,7 +158,7 @@
     <xsl:param name="is-root" as="xs:boolean" tunnel="yes" select="false"/>
     <xsl:param name="content" tunnel="yes" as="node()*"/>
     <xsl:param name="navigation" as="element()*" tunnel="yes"/>
-
+    <xsl:param name="documentation-title" tunnel="yes"/>
 
     <div id="{$IDMAINCONTENT}" class="{$CLASSMAINCONTENT}">
 
@@ -166,10 +166,17 @@
 
       <xsl:choose>
         <xsl:when test="$is-root">
+
+          <div id="toolbar">
+            <h1>
+              <xsl:value-of select="$documentation-title"/>
+            </h1>
+          </div>
+
           <xsl:sequence select="$navigation"/>
         </xsl:when>
         <xsl:otherwise>
-        	<xsl:apply-templates select="." mode="generate-local-breadcrumbs"/>        
+          <xsl:apply-templates select="." mode="generate-local-breadcrumbs"/>
         </xsl:otherwise>
 
       </xsl:choose>

@@ -115,39 +115,40 @@
 
     <xsl:if test="$HTML5OUTPUTLOCALBREADCRUMB = 'TRUE'">
       <div id="toolbar">
+        <div id="contentToolBar">
+          <ul id="breadcrumbs">
 
-        <ul id="breadcrumbs">
+            <li class="home">
+              <a class="home" href="{concat($relativePath, 'index.html')}">
+                <xsl:value-of select="$documentation-title"/>
+              </a>
+            </li>
 
-          <li class="home">
-            <a class="home" href="{concat($relativePath, 'index.html')}">
-              <xsl:value-of select="$documentation-title"/>
-            </a>
-          </li>
+            <xsl:for-each select="$topicAncestors">
+              <xsl:if test="name(./*[1]) = 'title' and name(.) = 'topichead'">
+                <li>
+                  <xsl:variable name="name">
+                    <xsl:choose>
+                      <xsl:when test="./@origId">
+                        <xsl:value-of select="'a'"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="'span'"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
+                  <xsl:element name="{$name}">
+                    <xsl:if test="./@origId">
+                      <xsl:attribute name="href" select="concat($relativePath, '#', ./@origId)"/>
+                    </xsl:if>
+                    <xsl:value-of select="normalize-space(./*[1])"/>
+                  </xsl:element>
+                </li>
+              </xsl:if>
+            </xsl:for-each>
 
-          <xsl:for-each select="$topicAncestors">
-            <xsl:if test="name(./*[1]) = 'title' and name(.) = 'topichead'">
-              <li>
-                <xsl:variable name="name">
-                  <xsl:choose>
-                    <xsl:when test="./@origId">
-                      <xsl:value-of select="'a'"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="'span'"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:variable>
-                <xsl:element name="{$name}">
-                  <xsl:if test="./@origId">
-                    <xsl:attribute name="href" select="concat($relativePath, '#', ./@origId)"/>
-                  </xsl:if>
-                  <xsl:value-of select="normalize-space(./*[1])"/>
-                </xsl:element>
-              </li>
-            </xsl:if>
-          </xsl:for-each>
-
-        </ul>
+          </ul>
+        </div>
       </div>
     </xsl:if>
   </xsl:template>
@@ -159,6 +160,7 @@
     <xsl:param name="content" tunnel="yes" as="node()*"/>
     <xsl:param name="navigation" as="element()*" tunnel="yes"/>
     <xsl:param name="documentation-title" tunnel="yes"/>
+    <xsl:param name="audienceSelect" tunnel="yes"/>
 
     <div id="{$IDMAINCONTENT}" class="{$CLASSMAINCONTENT}">
 
@@ -168,9 +170,12 @@
         <xsl:when test="$is-root">
 
           <div id="toolbar">
-            <h1>
-              <xsl:value-of select="$documentation-title"/>
-            </h1>
+            <div id="homeToolBar">
+
+              <!--xsl:value-of select="$documentation-title"/-->
+              <xsl:sequence select="$audienceSelect"/>
+
+            </div>
           </div>
 
           <xsl:sequence select="$navigation"/>

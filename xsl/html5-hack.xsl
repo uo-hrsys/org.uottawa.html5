@@ -258,10 +258,10 @@
     <xsl:variable name="oppDomain">
       <xsl:choose>
         <xsl:when test="$uolang='fr'">
-          <xsl:value-of select="'http://www.hr.uottawa.ca/'"/>
+          <xsl:value-of select="'/en/'"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="'http://www.rh.uottawa.ca/'"/>
+          <xsl:value-of select="'/fr/'"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>

@@ -40,9 +40,18 @@
   </xsl:template>
 
   <!-- The following lines are a workarround to ouput central server side include to the university -->
+  
+ 
+  
+  <xsl:template match="*" mode="gen-user-top-head">
+     <script type="text/javascript" charset="utf-8" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" />
+  </xsl:template>
+  
+  
   <xsl:template match="*" mode="gen-user-bottom-head">
 
     <xsl:comment>#include virtual="/assets-templates/3/inc/head-top-nojquery.html"</xsl:comment>
+    
     <xsl:comment>#include virtual="/a/inc/main/head.php"</xsl:comment>
     <xsl:comment>#include virtual="/assets-templates/3/inc/head-bottom.html"</xsl:comment>
 

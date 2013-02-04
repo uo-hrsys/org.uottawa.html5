@@ -33,6 +33,8 @@
 			<param name="args.js.file" value="/a/themes/uo/js/script-min.js"/>
 			<param name="http.absolute.uri" value="/a/themes/"/>
 			<param name="html5.navigation.markup" value="${html5.navigation.markup}"/>
+			<param name="html5.copy.libs" value="no"/>
+			<param name="html5.copy.assets" value="no"/>
 			<!--param name="html5.prevent.copy.libs" value="yes" /-->
 
 		</antcall>

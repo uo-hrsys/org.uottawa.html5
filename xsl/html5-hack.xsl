@@ -178,15 +178,6 @@
       <xsl:choose>
         <xsl:when test="$is-root">
 
-          <div id="toolbar">
-            <div id="homeToolBar">
-
-              <!--xsl:value-of select="$documentation-title"/-->
-              <xsl:sequence select="$audienceSelect"/>
-
-            </div>
-          </div>
-
           <xsl:sequence select="$navigation"/>
         </xsl:when>
         <xsl:otherwise>

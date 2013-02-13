@@ -44,7 +44,8 @@
  
   
   <xsl:template match="*" mode="gen-user-top-head">
-     <script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery-1.7.min.js" />
+     <!--script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery-1.7.min.js" /-->
+
   </xsl:template>
   
   

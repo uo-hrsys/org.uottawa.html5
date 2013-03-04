@@ -1,4 +1,4 @@
-<project name="dita2uohtml5" default="dita2uohtml5">
+<project name="dita2uohtml5" default="dita2uohtml5" xmlns:dita="http://dita-ot.sourceforge.net">
 
 	<property name="transtype" value="uohtml5"/>
 

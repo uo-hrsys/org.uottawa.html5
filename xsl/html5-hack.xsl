@@ -34,7 +34,6 @@
   <xsl:template match="*" mode="generate-html5-page">
     <html>
       <xsl:attribute name="lang" select="$lang"/>
-      <xsl:attribute name="xml:lang" select="$lang"/>
       <xsl:apply-templates select="." mode="generate-head"/>
       <xsl:apply-templates select="." mode="generate-body"/>
     </html>
@@ -45,9 +44,9 @@
  
   
   <xsl:template match="*" mode="gen-user-top-head">
-  <script type="text/javascript" src="{concat($UOHRASSETSDOMAIN, 'a/js/employee-group.js')}" ></script>
+
  	<xsl:comment>#include virtual="/a/inc/main/head.php"</xsl:comment>
- 	
+ 	<script type="text/javascript" src="{concat($UOHRASSETSDOMAIN, 'a/js/employee-group.js')}" ></script>
   </xsl:template>
   
   

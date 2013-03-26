@@ -287,7 +287,8 @@
     <xsl:variable name="relativeUri">
       <xsl:choose>
         <xsl:when test="$user-defined-alternate-lang!=''">
-          <xsl:value-of select="concat($outputDirectory, $user-defined-alternate-lang)"/>
+          <!--xsl:value-of select="concat($outputDirectory, $user-defined-alternate-lang)"/-->
+          <xsl:value-of select="concat($outputDirectory, $topicRelativeUri)"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="concat($outputDirectory, $topicRelativeUri)"/>
@@ -363,7 +364,7 @@
 
      <div class="span-4 prepend-top">
        <div class="box square with-outset with-large-radius">
-         <div id="apuo" role="button" class="choose-group-button">
+         <div id="{@name}" role="button" class="choose-group-button">
            <h2><xsl:value-of select="@othertype"/></h2>
            <xsl:if test="@otherjob!=''">
              <abbr title="{@othertype}"><xsl:value-of select="@otherjob"/></abbr>

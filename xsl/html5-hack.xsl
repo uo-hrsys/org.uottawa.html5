@@ -25,9 +25,10 @@
 
   <xsl:param name="HTML5OUTPUTLOCALBREADCRUMB" select="'TRUE'"/>
   <xsl:param name="UOHRASSETSDOMAIN" select="'/'"/>
+
+  <xsl:variable name="currentTopNavSection" select="/map/topicmeta/data[@name='currentTopNavSection'][1]/@value"/>
+  <xsl:variable name="outputDirectory" select="/map/topicmeta/data[@name='alternate-lang-directory'][1]/@value"/>
   
-  <xsl:variable name="currentTopNavSection" select="/map/topicmeta/data[@name='currentTopNavSection']/@value"/>
-  <xsl:variable name="outputDirectory" select="/map/topicmeta/data[@name='alternate-lang-directory']/@value"/>
   <xsl:variable name="lang" select="substring($TEMPLATELANG, 1, 2)"/>
 
   <!-- our templates used 2 digits lang -->
@@ -40,18 +41,18 @@
   </xsl:template>
 
   <!-- The following lines are a workarround to ouput central server side include to the university -->
-  
- 
-  
+
+
+
   <xsl:template match="*" mode="gen-user-top-head">
 
- 	<xsl:comment>#include virtual="/a/inc/main/head.php"</xsl:comment>
- 	<script type="text/javascript" src="{concat($UOHRASSETSDOMAIN, 'a/js/employee-group.js')}" ></script>
+    <xsl:comment>#include virtual="/a/inc/main/head.php"</xsl:comment>
+    <script type="text/javascript" src="{concat($UOHRASSETSDOMAIN, 'a/js/employee-group.js')}"/>
   </xsl:template>
-  
-  
+
+
   <xsl:template match="*" mode="gen-user-bottom-head">
-       
+
     <xsl:comment>#include virtual="/assets-templates/3/inc/head-bottom.html"</xsl:comment>
 
     <script>
@@ -278,10 +279,9 @@
     </xsl:variable>
 
     <xsl:variable name="user-defined-alternate-lang" select="prolog/data[@name='alternate-language-id']/@value"/>
-    
-    <xsl:message>
-        relativeUri                : <xsl:value-of select="$topicRelativeUri" />
-    	user-defined-alternate-lang: <xsl:value-of select="$user-defined-alternate-lang" />
+
+    <xsl:message> relativeUri : <xsl:value-of select="$topicRelativeUri"/> user-defined-alternate-lang: <xsl:value-of
+        select="$user-defined-alternate-lang"/>
     </xsl:message>
 
     <xsl:variable name="relativeUri">
@@ -323,63 +323,70 @@
 
 
   <xsl:template mode="html5-impl" match="*"/>
-  
+
   <xsl:template match="*[df:class(., 'map/map')]" mode="generate-audience-select">
     <xsl:param name="uniqueTopicRefs" as="element()*" tunnel="yes"/>
     <xsl:param name="rootMapDocUrl" as="xs:string" tunnel="yes"/>
     <xsl:message> + [INFO] Generating audience select </xsl:message>
-    
-    <span id="audience-widget">   		
-    		<button id="audienceBtn">
-    			<xsl:call-template name="getString">
-                    <xsl:with-param name="stringName" select="'chooseAudience'"/>
-                </xsl:call-template>
-    		</button>
-   </span>
+
+    <span id="audience-widget">
+      <button id="audienceBtn">
+        <xsl:call-template name="getString">
+          <xsl:with-param name="stringName" select="'chooseAudience'"/>
+        </xsl:call-template>
+      </button>
+    </span>
     <div id="audience-list" class="with-shadow">
-       <div id="group-links">
-    		<xsl:apply-templates select="*[df:class(., 'map/topicmeta')]" mode="generate-audience-select"/>
-  	   </div>
+      <div id="group-links">
+        <xsl:apply-templates select="*[df:class(., 'map/topicmeta')]" mode="generate-audience-select"/>
+      </div>
     </div>
   </xsl:template>
-  
-<xsl:template match="*" mode="generate-audience-select">
-	<xsl:apply-templates select="*" mode="generate-audience-select"/>
+
+  <xsl:template match="*" mode="generate-audience-select">
+    <xsl:apply-templates select="*" mode="generate-audience-select"/>
   </xsl:template>
 
- <xsl:template match="*[contains(@class, ' topic/audience ')]" mode="generate-audience-select">
-  <xsl:param name="relativePath" as="xs:string" select="''" tunnel="yes"/>
-  <xsl:message> + [INFO] Generating audience <xsl:value-of select="@name" /> entry </xsl:message>
-   
-   <xsl:variable name="selected">
-     <xsl:choose>
-       <xsl:when test="@name = $activeAudience">
-         <xsl:value-of select="'selected'"/>            
-       </xsl:when>
-       <xsl:otherwise><xsl:value-of select="'not-selected'"/></xsl:otherwise>
-     </xsl:choose>
-   </xsl:variable>
+  <xsl:template match="*[contains(@class, ' topic/audience ')]" mode="generate-audience-select">
+    <xsl:param name="relativePath" as="xs:string" select="''" tunnel="yes"/>
+    <xsl:message> + [INFO] Generating audience <xsl:value-of select="@name"/> entry </xsl:message>
 
-   <a href="{concat($relativePath, $indexUri, '/../../', @name, '/')}" class="{concat('d4p-no-ajax ', 'group-link ', $selected)}">
+    <xsl:variable name="selected">
+      <xsl:choose>
+        <xsl:when test="@name = $activeAudience">
+          <xsl:value-of select="'selected'"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'not-selected'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
 
-     <div class="span-4 prepend-top">
-       <div class="box square with-outset with-large-radius">
-         <div id="{@name}" role="button" class="choose-group-button">
-           <h2><xsl:value-of select="@othertype"/></h2>
-           <xsl:if test="@otherjob!=''">
-             <abbr title="{@othertype}"><xsl:value-of select="@otherjob"/></abbr>
-           </xsl:if>
-           
-         </div>
-       </div>
-     </div>
-	
-	</a>
+    <a href="{concat($relativePath, $indexUri, '/../../', @name, '/')}"
+      class="{concat('d4p-no-ajax ', 'group-link ', $selected)}">
+
+      <div class="span-4 prepend-top">
+        <div class="box square with-outset with-large-radius">
+          <div id="{@name}" role="button" class="choose-group-button">
+            <h2>
+              <xsl:value-of select="@othertype"/>
+            </h2>
+            <xsl:if test="@otherjob!=''">
+              <abbr title="{@othertype}">
+                <xsl:value-of select="@otherjob"/>
+              </abbr>
+            </xsl:if>
+
+          </div>
+        </div>
+      </div>
+
+    </a>
 
   </xsl:template>
 
 
-		
+
 
 
 </xsl:stylesheet>

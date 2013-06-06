@@ -3,10 +3,13 @@
 
 	<require plugin="net.sourceforge.dita4publishers.html5" />
 	
-	<template file="build_uohtml5-transtype-html5_template.xml" />
-	
+	<template file="build_uohtml5_html5_template.xml" />
+	<template file="xsl/map2uohtml5_template.xsl" />
+		
 	<feature extension="dita.conductor.transtype.check" value="uohtml5" type="txt" />
 	<feature extension="dita.conductor.target.relative" file="build.xml" type="file" />
-	<feature extension="xsl.transtype-html5" value="xsl/brand.xsl" type="file" />
 	<feature extension="dita.html5.map" value="parameters.xml" type="file" />
+	<feature extension="dita.xsl.strings" value="strings/strings.xml" type="file"/>
+	<feature extension="xsl.transtype-html5" value="xsl/custom-all-html5-transforms.xsl" type="file" />
+	  
 </plugin>

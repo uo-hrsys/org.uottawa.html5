@@ -1,3 +1,4 @@
 <dummy>
+	<!-- add here all params you ant to pass to the xslt -->
 	<param name="HTML5OUTPUTLOCALBREADCRUMB" expression="${html5.output.localbreadcrumb}"/> 
 </dummy>

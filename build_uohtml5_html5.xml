@@ -1,43 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?><project name="dita2uohtml5" default="dita2uohtml5">
-
+	
 	<property name="transtype" value="uohtml5"></property>
+	<dirname property="dita2uohtml5.dir" file="${ant.file.dita2uohtml5}"></dirname>
 	
-	<condition property="html5.site.theme" value="${args.cssroot}">
-        <isset property="args.cssroot"></isset>
-	</condition>
-	
-     <condition property="html5.site.theme" value="uo">
-		  <not>
-        <isset property="html5.site.theme"></isset>
-      </not>
-	</condition>
-
-	<condition property="html5.output.localbreadcrumb" value="FALSE">
-		  <not>
-        <isset property="html5.output.localbreadcrumb"></isset>
-      </not>
-	</condition>
-	
-	<condition property="html5.navigation.markup" value="">
-		  <not>
-        <isset property="html5.navigation.markup"></isset>
-      </not>
-	</condition>
-
 	<target name="dita2uohtml5">
-
+		
+		
+		<condition property="html5.output.localbreadcrumb" value="FALSE">
+			<not>
+				<isset property="html5.output.localbreadcrumb"></isset>
+			</not>
+		</condition>
+		
+		<condition property="html5.navigation.markup" value="">
+			<not>
+				<isset property="html5.navigation.markup"></isset>
+			</not>
+		</condition>
+		
+		<condition property="html5.site.theme" value="uo">
+			<not>
+				<isset property="html5.site.theme"></isset>
+			</not>
+		</condition>
+		
+		
 		<antcall target="dita2html5">
+			<param name="map2html5.style" value="${dita2uohtml5.dir}/xsl/map2uohtml5.xsl"></param>
+			<param name="html5.site.theme" value="${html5.site.theme}"></param>
+			
 			<param name="html5.id.main.container" value="main-container"></param>
 			<param name="html5.id.section.container" value="section-container"></param>
 			<param name="html5.id.main.content" value="main-content"></param>
 			<param name="html5.id.navigation" value="home"></param>
 			<param name="html5.js.options" value=""></param>
-			<param name="html5.site.theme" value="${html5.site.theme}"></param>
 			<param name="html5.class.main.content" value="span-24 last"></param>
 			<param name="html5.grid.prefix" value="span-"></param>
 			
 			<!-- theses lines allows to add the assets in a central directory, 
-			     so all documentation point to the same assets file -->
+				so all documentation point to the same assets file -->
 			<param name="html5.args.theme.file" value="/a/themes/${html5.site.theme}/css/style.css"></param>
 			<param name="args.js.file" value="/a/themes/${html5.site.theme}/js/script-min.js"></param>
 			<param name="http.absolute.uri" value="/a/themes/"></param>
@@ -45,9 +46,9 @@
 			<param name="html5.copy.libs" value="no"></param>
 			<param name="html5.copy.assets" value="no"></param>
 			<!--param name="html5.prevent.copy.libs" value="yes" /-->
-
+			
 		</antcall>
-
+		
 	</target>
-
+	
 </project>

@@ -3,11 +3,6 @@
  */
 (function (d4p) {
 
-	d4p.ajaxLoader.prototype.rewriteLangAttrHref = function (response) {
-		var langHref = this.html.find("#ch-lang-url").attr('href');
-		$("#ch-lang-url").attr('href', langHref);
-	}; 
-
     var inav = new d4p.module('inav', {
    
 		hideAll: function (id) {
@@ -21,6 +16,12 @@
 		setAria: function () {
 			$('.box-ico a').attr('aria-role', 'button');
 		},
+		
+		rewriteLangAttrHref : function (response) {
+		  var lang = $('html').attr('lang') == 'en' ? 'fr' : 'en',
+		  alternatelangdirectory = $("meta[name='alternate-lang-directory']").attr('content');
+		  $("#ch-lang-url").attr('href', "/"+lang+"/"+alternatelangdirectory+document.location.hash);
+	    },
 		
 		load: function () {
 			var o = this,
@@ -81,7 +82,7 @@
         	this.setAria();
         	this.bind('uriChange', 'load');
         	this.bind('uriChange', 'goToHash');
-        	d4p.ajax.bind('ready', 'rewriteLangAttrHref');
+        	this.bind('uriChange', 'rewriteLangAttrHref');
         	this.load();
         }        
     });
@@ -152,7 +153,7 @@
 	
  	    load: function () {
 			var l = d4p.l();
-			_gaq.push(['_trackPageview', l.uri]);
+			_gaq.push(['_trackPageview', document.location.pathname + '#' + l.uri]);
 		},
 			
  		init: function() {

@@ -31,7 +31,8 @@
 
 
   <xsl:template match="*" mode="gen-user-top-head">
-
+  
+    <meta name="alternate-lang-directory" content="{$outputDirectory}" />
     <xsl:comment>#include virtual="/a/inc/main/head.php"</xsl:comment>
     <script type="text/javascript" src="{concat($UOHRASSETSDOMAIN, 'a/js/employee-group.js')}"/>
   </xsl:template>

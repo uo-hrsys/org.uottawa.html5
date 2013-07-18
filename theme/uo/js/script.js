@@ -19,8 +19,9 @@
 		
 		rewriteLangAttrHref : function (response) {
 		  var lang = $('html').attr('lang') == 'en' ? 'fr' : 'en',
+		  alternateDomain = $("meta[name='alternate-domain']").attr('content');
 		  alternatelangdirectory = $("meta[name='alternate-lang-directory']").attr('content');
-		  $("#ch-lang-url").attr('href', "/"+lang+"/"+alternatelangdirectory+document.location.hash);
+		  $("#ch-lang-url").attr('href', alternateDomain+alternatelangdirectory+document.location.hash);
 	    },
 		
 		load: function () {

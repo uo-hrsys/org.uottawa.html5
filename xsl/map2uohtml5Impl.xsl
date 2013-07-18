@@ -14,8 +14,18 @@
 
   <xsl:variable name="currentTopNavSection" select="/map/topicmeta/data[@name='currentTopNavSection'][1]/@value"/>
   <xsl:variable name="outputDirectory" select="/map/topicmeta/data[@name='alternate-lang-directory'][1]/@value"/>
-  
   <xsl:variable name="lang" select="substring($TEMPLATELANG, 1, 2)"/>
+  
+  <xsl:variable name="alternate-domain">
+   <xsl:choose>
+        <xsl:when test="$lang='fr'">
+          <xsl:value-of select="'http://www.hr.uottawa.ca/'"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'http://www.rh.uottawa.ca/'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+  </xsl:variable>
 
   <!-- our templates used 2 digits lang -->
   <xsl:template match="*" mode="generate-html5-page">
@@ -33,6 +43,8 @@
   <xsl:template match="*" mode="gen-user-top-head">
   
     <meta name="alternate-lang-directory" content="{$outputDirectory}" />
+    <meta name="alternate-domain" content="{$alternate-domain}" />
+    
     <xsl:comment>#include virtual="/a/inc/main/head.php"</xsl:comment>
     <script type="text/javascript" src="{concat($UOHRASSETSDOMAIN, 'a/js/employee-group.js')}"/>
   </xsl:template>
@@ -245,10 +257,10 @@
     <xsl:variable name="oppDomain">
       <xsl:choose>
         <xsl:when test="$uolang='fr'">
-          <xsl:value-of select="'/en/'"/>
+          <xsl:value-of select="'http://www.hr.uottawa.ca/'"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="'/fr/'"/>
+          <xsl:value-of select="'http://www.rh.uottawa.ca/'"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -283,23 +295,18 @@
       </xsl:choose>
     </xsl:variable>
 
-
-    <ul id="page-links">
-      <li>
-        <a id="skip-to-content" href="#{$IDMAINCONTENT}">
-          <xsl:call-template name="getString">
+    <div id="skip-links">
+     <a class="skip-link" href="#main-content"> <xsl:call-template name="getString">
             <xsl:with-param name="stringName" select="'SkipToContent'"/>
-          </xsl:call-template>
-        </a>
-      </li>
-      <li>
-        <a id="skip-to-localnav" href="#section-top">
-          <xsl:call-template name="getString">
+          </xsl:call-template></a>
+     <a class="skip-link" href="#section-top"> <xsl:call-template name="getString">
             <xsl:with-param name="stringName" select="'SkipToLocalNav'"/>
-          </xsl:call-template>
-        </a>
-      </li>
-
+          </xsl:call-template></a>
+     <a class="skip-link" href="#footer"> <xsl:call-template name="getString">
+            <xsl:with-param name="stringName" select="'SkipToFooter'"/>
+          </xsl:call-template></a>
+	</div>  
+    <ul id="page-links">
       <li>
         <a id="ch-lang-url" href="{concat($oppDomain, $relativeUri)}" lang="{$opplang}" hreflang="{$opplang}">
           <xsl:value-of select="$oppLangName"/>

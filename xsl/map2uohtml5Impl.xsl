@@ -46,7 +46,7 @@
     <meta name="alternate-domain" content="{$alternate-domain}" />
     
     <xsl:comment>#include virtual="/a/inc/main/head.php"</xsl:comment>
-    <script type="text/javascript" src="{concat($UOHRASSETSDOMAIN, 'a/js/employee-group.js')}"/>
+    <script type="text/javascript" src="{concat($UOHRASSETSDOMAIN, 'a/js/employee-group.js')}"></script>
   </xsl:template>
 
 
